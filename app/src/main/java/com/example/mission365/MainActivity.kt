@@ -1,5 +1,7 @@
 package com.example.mission365
 
+import android.app.WallpaperManager
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,7 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpapers
 import com.example.mission365.ui.theme.Mission365Theme
 
 class MainActivity : ComponentActivity() {
@@ -40,6 +46,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     Column(modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(image,null)
     }
+    WallpaperManager.getInstance(LocalContext.current).setBitmap(
+        image.asAndroidBitmap(),null,true,
+        WallpaperManager.FLAG_LOCK)
 
 }
 

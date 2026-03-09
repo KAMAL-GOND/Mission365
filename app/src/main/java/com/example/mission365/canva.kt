@@ -26,7 +26,7 @@ fun CreateWallpaper(): ImageBitmap {
     var UpperSpace = ScreenHeight *0.25
     var BottomSpace= ScreenHeight *0.10
     var GridHeight = ScreenHeight-UpperSpace-BottomSpace
-    var GridWidth = ScreenWidth.toDouble()
+    var GridWidth = ScreenWidth.toDouble() *0.9
     var CurrenDate= LocalDate.now()
     var todaysDate = CurrenDate.dayOfYear
     var TotalDays = CurrenDate.lengthOfYear()
