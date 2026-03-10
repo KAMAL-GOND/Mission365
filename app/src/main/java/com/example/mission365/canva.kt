@@ -3,6 +3,8 @@ package com.example.mission365
 import android.R
 import android.R.attr.textSize
 import android.R.attr.typeface
+import android.app.Application
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.provider.CalendarContract
@@ -28,8 +30,60 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 //@Preview(showBackground = true, showSystemUi = true, )
+
+fun CreateWallpaper(context : Context): ImageBitmap {
+    //var context = LocalContext
+    var ScreenHeight = context.resources.displayMetrics.heightPixels
+    var ScreenWidth =  context.resources.displayMetrics.widthPixels
+    var UpperSpace = ScreenHeight *0.30
+    var BottomSpace= ScreenHeight *0.08
+    var GridHeight = ScreenHeight-UpperSpace-BottomSpace
+    var GridWidth = ScreenWidth.toDouble() *0.95
+    var CurrenDate= LocalDate.now()
+    var todaysDate = CurrenDate.dayOfYear
+    var TotalDays = CurrenDate.lengthOfYear()
+    var Columns = 14
+    var Rows = 27
+    var cellSize =minOf(GridHeight/Rows , GridWidth /Columns)
+    var paint = Paint().apply {
+        color= Color.White
+
+    }
+    var leftDaysPaint = Paint().apply { color= Color.White ; strokeWidth=2f;style= PaintingStyle.Stroke }
+    var CurrentDaysPaint = Paint().apply { color= Color.Red ;style= PaintingStyle.Fill }
+
+
+
+    var image = Bitmap.createBitmap(ScreenWidth,ScreenHeight, Bitmap.Config.ARGB_8888 ).asImageBitmap()
+    var canvas = Canvas(image)
+    for(i in 1..TotalDays){
+        //var i=j+1;
+        var Rx = (i%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
+        var Ry = (i/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
+        //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
+
+        when{
+           i < todaysDate->{canvas.drawCircle(Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  paint)}
+            i == todaysDate->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  CurrentDaysPaint)}
+            i > todaysDate->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()),  cellSize.toFloat()*0.35f, leftDaysPaint)}
+
+        }
+
+    }
+
+
+    //canvas.drawImage()
+
+    return image;
+
+
+
+
+
+
+}
 @Composable
-fun CreateWallpaper(): ImageBitmap {
+fun CreateAgeWallpaper(): ImageBitmap {
     var context = LocalContext
     var ScreenHeight = context.current.applicationContext.resources.displayMetrics.heightPixels
     var ScreenWidth =  context.current.applicationContext.resources.displayMetrics.widthPixels
@@ -52,14 +106,15 @@ fun CreateWallpaper(): ImageBitmap {
 
     var image = Bitmap.createBitmap(ScreenWidth,ScreenHeight, Bitmap.Config.ARGB_8888 ).asImageBitmap()
     var canvas = Canvas(image)
-    for(i in 0..TotalDays-1){
-        //var i=j-1;
+    for(j in 0..TotalDays-1){
+        var i=j+1;
         var Rx = (i%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
         var Ry = (i/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
         //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
+
         when{
-           i < todaysDate->{canvas.drawCircle(Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  paint)}
+            i < todaysDate->{canvas.drawCircle(Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  paint)}
             i == todaysDate->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  Paint().apply { color =
                 Color.Red})}
             i > todaysDate->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()),  cellSize.toFloat()*0.35f, leftDaysPaint)}
