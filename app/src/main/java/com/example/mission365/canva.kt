@@ -1,9 +1,14 @@
 package com.example.mission365
 
 import android.R
+import android.R.attr.textSize
+import android.R.attr.typeface
 import android.graphics.Bitmap
+import android.graphics.Typeface
 import android.provider.CalendarContract
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -11,22 +16,27 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextPainter
+import androidx.compose.ui.text.TextPainter.paint
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationCompat
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@Preview(showBackground = true, backgroundColor = android.graphics.Color.WHITE.toLong())
+//@Preview(showBackground = true, showSystemUi = true, )
 @Composable
 fun CreateWallpaper(): ImageBitmap {
     var context = LocalContext
     var ScreenHeight = context.current.applicationContext.resources.displayMetrics.heightPixels
     var ScreenWidth =  context.current.applicationContext.resources.displayMetrics.widthPixels
-    var UpperSpace = ScreenHeight *0.25
-    var BottomSpace= ScreenHeight *0.10
+    var UpperSpace = ScreenHeight *0.30
+    var BottomSpace= ScreenHeight *0.08
     var GridHeight = ScreenHeight-UpperSpace-BottomSpace
-    var GridWidth = ScreenWidth.toDouble() *0.9
+    var GridWidth = ScreenWidth.toDouble() *0.95
     var CurrenDate= LocalDate.now()
     var todaysDate = CurrenDate.dayOfYear
     var TotalDays = CurrenDate.lengthOfYear()
@@ -34,25 +44,32 @@ fun CreateWallpaper(): ImageBitmap {
     var Rows = 27
     var cellSize =minOf(GridHeight/Rows , GridWidth /Columns)
     var paint = Paint().apply {
-        color=Color.Gray
+        color= Color.White
 
     }
+    var leftDaysPaint = Paint().apply { color= Color.White ; strokeWidth=2f;style= PaintingStyle.Stroke }
 
 
     var image = Bitmap.createBitmap(ScreenWidth,ScreenHeight, Bitmap.Config.ARGB_8888 ).asImageBitmap()
     var canvas = Canvas(image)
-    for(i in 1..TotalDays){
-        var Rx = (i%Columns) * (GridWidth/Columns)
-        var Ry = (i/Columns) *(GridHeight/Rows)
+    for(i in 0..TotalDays-1){
+        //var i=j-1;
+        var Rx = (i%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
+        var Ry = (i/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
+        //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
         when{
-           i < todaysDate->{canvas.drawCircle(center = Offset(Rx.toFloat(),Ry.toFloat()), radius = cellSize.toFloat()*0.3f, paint = paint)}
-            i == todaysDate->{canvas.drawCircle(center = Offset(Rx.toFloat(),Ry.toFloat()), radius = cellSize.toFloat()*0.3f, paint = Paint())}
-            i > todaysDate->{canvas.drawCircle(center = Offset(Rx.toFloat(),Ry.toFloat()), radius = cellSize.toFloat()*0.3f, paint = Paint())}
+           i < todaysDate->{canvas.drawCircle(Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  paint)}
+            i == todaysDate->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  Paint().apply { color =
+                Color.Red})}
+            i > todaysDate->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()),  cellSize.toFloat()*0.35f, leftDaysPaint)}
 
         }
 
     }
+
+
+    //canvas.drawImage()
 
     return image;
 
@@ -60,4 +77,7 @@ fun CreateWallpaper(): ImageBitmap {
 
 
 
+
 }
+
+
