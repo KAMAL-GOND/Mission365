@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.work.Worker
 import com.example.mission365.ui.theme.Mission365Theme
+import java.time.LocalDate
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +39,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             Mission365Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    Greeting2(
+                        //name = "Android",
                         modifier = Modifier.padding(innerPadding),
-                        applicationContext
+                        applicationContext,
+                        LocalDate.of(2003,8,6)
                     )
                 }
             }
@@ -64,3 +66,17 @@ fun Greeting(name: String, modifier: Modifier = Modifier,context: Context) {
 
 }
 
+@Composable
+fun Greeting2( modifier: Modifier = Modifier,context: Context,date: LocalDate) {
+    var image = CreateAgeWallpaper(context,date)
+    Image(image,null)
+    Column(modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,) {
+        Button(onClick = {
+            scheduleYearWallpaperWorker(context,date)
+        }, colors = ButtonColors(Color.Blue,Color.White, Color.Blue,Color.White)) { Text("Apply")}
+    }
+    WallpaperManager.getInstance(context).setBitmap(
+        image.asAndroidBitmap(),null,true,
+        WallpaperManager.FLAG_SYSTEM)
+
+}

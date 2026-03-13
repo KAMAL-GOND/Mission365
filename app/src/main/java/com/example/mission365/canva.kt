@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationCompat
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 //@Preview(showBackground = true, showSystemUi = true, )
 
@@ -82,42 +83,44 @@ fun CreateWallpaper(context : Context): ImageBitmap {
 
 
 }
-@Composable
-fun CreateAgeWallpaper(): ImageBitmap {
-    var context = LocalContext
-    var ScreenHeight = context.current.applicationContext.resources.displayMetrics.heightPixels
-    var ScreenWidth =  context.current.applicationContext.resources.displayMetrics.widthPixels
-    var UpperSpace = ScreenHeight *0.30
-    var BottomSpace= ScreenHeight *0.08
+
+fun CreateAgeWallpaper(context: Context, BirthDate : LocalDate): ImageBitmap {
+    //var context = LocalContext
+    var ScreenHeight = context.resources.displayMetrics.heightPixels
+    var ScreenWidth =  context.resources.displayMetrics.widthPixels
+    var UpperSpace = ScreenHeight *0.20
+    var BottomSpace= ScreenHeight *0.03
     var GridHeight = ScreenHeight-UpperSpace-BottomSpace
     var GridWidth = ScreenWidth.toDouble() *0.95
-    var CurrenDate= LocalDate.now()
-    var todaysDate = CurrenDate.dayOfYear
-    var TotalDays = CurrenDate.lengthOfYear()
-    var Columns = 14
-    var Rows = 27
+//    var CurrenDate= LocalDate.now()
+//    var todaysDate = CurrenDate.dayOfYear
+//    var TotalDays = CurrenDate.lengthOfYear()
+    var Totalweeks = 3650
+    var livedWeeks= livingWeeks(BirthDate)
+    var Columns = 53
+    var Rows = 81
     var cellSize =minOf(GridHeight/Rows , GridWidth /Columns)
     var paint = Paint().apply {
         color= Color.White
 
     }
     var leftDaysPaint = Paint().apply { color= Color.White ; strokeWidth=2f;style= PaintingStyle.Stroke }
+    var CurrentDaysPaint = Paint().apply { color= Color.Red ;style= PaintingStyle.Fill }
 
 
     var image = Bitmap.createBitmap(ScreenWidth,ScreenHeight, Bitmap.Config.ARGB_8888 ).asImageBitmap()
     var canvas = Canvas(image)
-    for(j in 0..TotalDays-1){
-        var i=j+1;
+    for(i in 1..Totalweeks){
+
         var Rx = (i%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
         var Ry = (i/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
         //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
 
         when{
-            i < todaysDate->{canvas.drawCircle(Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  paint)}
-            i == todaysDate->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  Paint().apply { color =
-                Color.Red})}
-            i > todaysDate->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()),  cellSize.toFloat()*0.35f, leftDaysPaint)}
+            i < livedWeeks->{canvas.drawCircle(Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  paint)}
+            i == livedWeeks->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  CurrentDaysPaint)}
+            i > livedWeeks->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()),  cellSize.toFloat()*0.35f, leftDaysPaint)}
 
         }
 
@@ -134,5 +137,18 @@ fun CreateAgeWallpaper(): ImageBitmap {
 
 
 }
-
+// function to calculate weeks
+//fun LivingWeeks(date: LocalDate): Int{
+//    var todayDate= LocalDate.now()
+//    var year = (todayDate.year-date.year)*365.25
+//    var month = (todayDate.monthValue-date.monthValue) *365.25/12
+//    var DAY = (todayDate.dayOfMonth-date.dayOfMonth)
+//
+//    return ((year+month+DAY.toDouble())/7.0).toInt();
+//
+//
+//}
+fun livingWeeks(birthDate: LocalDate): Int {
+    return ChronoUnit.WEEKS.between(birthDate, LocalDate.now()).toInt()
+}
 

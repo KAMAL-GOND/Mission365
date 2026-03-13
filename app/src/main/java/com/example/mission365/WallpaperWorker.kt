@@ -2,16 +2,20 @@ package com.example.mission365
 
 import android.app.WallpaperManager
 import android.content.Context
+import android.util.Log
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration
 
 class WallpaperWorker(
     context: Context,
@@ -76,6 +80,69 @@ fun scheduleWallpaperWorker(context: Context) {
         .enqueueUniquePeriodicWork(
             "age_wallpaper_job",
             ExistingPeriodicWorkPolicy.UPDATE,
-            request
+            request,
+
         )
 }
+
+fun delayUntilNextWeekMidnight() : Long{
+    val nextWeekStartingDate= 7 - LocalDateTime.now().dayOfWeek.value;
+    val MondayMidNight= LocalDateTime.now().toLocalDate().plusDays(nextWeekStartingDate.toLong()).atTime(0,3)
+    return ChronoUnit.MILLIS.between(LocalDateTime.now(),MondayMidNight)
+
+
+}
+
+
+class yearWorker(context: Context, params: WorkerParameters) : Worker(context, params){
+
+    override fun doWork(): Result {
+        val dateString = inputData.getString("birthDate") ?: return Result.failure()
+        val date = LocalDate.parse(dateString)
+
+        try{
+
+            var context= applicationContext
+            var image= CreateAgeWallpaper(applicationContext,date).asAndroidBitmap()
+            var manager= WallpaperManager.getInstance(context)
+            manager.setBitmap(image,null,true, WallpaperManager.FLAG_SYSTEM)
+            return Result.success()
+
+
+        }
+
+        catch (e : Exception){
+
+            Log.d("yearWallpaper",e.toString())
+            return Result.failure()
+
+        }
+        //return TODO("Provide the return value")
+    }
+}
+fun scheduleYearWallpaperWorker(context: Context, birthDate: LocalDate) {
+
+    val delay = delayUntilNextWeekMidnight()
+    val data = Data.Builder()
+        .putString("birthDate", birthDate.toString())
+        .build()
+
+    val request = PeriodicWorkRequestBuilder<yearWorker>(
+        7, TimeUnit.DAYS
+    )
+        .setInitialDelay(delay, TimeUnit.MILLISECONDS).setInputData(data)
+        .build()
+
+
+
+    WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+        "YearAge_wallpaper_job",
+        ExistingPeriodicWorkPolicy.UPDATE,
+        request,
+
+
+        )
+}
+
+
+
