@@ -152,3 +152,50 @@ fun livingWeeks(birthDate: LocalDate): Int {
     return ChronoUnit.WEEKS.between(birthDate, LocalDate.now()).toInt()
 }
 
+fun CustomizedImage(startDate : LocalDate,endDate : LocalDate, Rows:Int, Column:Int, context: Context): ImageBitmap{
+    var ScreenHeight = context.resources.displayMetrics.heightPixels
+    var ScreenWidth =  context.resources.displayMetrics.widthPixels
+    var UpperSpace = ScreenHeight *0.20
+    var BottomSpace= ScreenHeight *0.03
+    var GridHeight = ScreenHeight-UpperSpace-BottomSpace
+    var GridWidth = ScreenWidth.toDouble() *0.95
+//    var CurrenDate= LocalDate.now()
+//    var todaysDate = CurrenDate.dayOfYear
+//    var TotalDays = CurrenDate.lengthOfYear()
+    var TotalDays = ChronoUnit.DAYS.between(startDate, endDate).toInt()
+    var livedDays = ChronoUnit.DAYS.between(startDate, LocalDate.now()).toInt()
+    var Columns = Column
+    var Rows =Rows
+    var cellSize =minOf(GridHeight/Rows , GridWidth /Columns)
+    var paint = Paint().apply {
+        color= Color.White
+
+    }
+    var leftDaysPaint = Paint().apply { color= Color.White ; strokeWidth=2f;style= PaintingStyle.Stroke }
+    var CurrentDaysPaint = Paint().apply { color= Color.Red ;style= PaintingStyle.Fill }
+
+
+    var image = Bitmap.createBitmap(ScreenWidth,ScreenHeight, Bitmap.Config.ARGB_8888 ).asImageBitmap()
+    var canvas = Canvas(image)
+    for(i in 1..TotalDays){
+
+        var Rx = (i%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
+        var Ry = (i/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
+        //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
+
+
+        when{
+            i < livedDays->{canvas.drawCircle(Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  paint)}
+            i == livedDays->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()), cellSize.toFloat()*0.35f,  CurrentDaysPaint)}
+            i > livedDays->{canvas.drawCircle( Offset(Rx.toFloat(),Ry.toFloat()),  cellSize.toFloat()*0.35f, leftDaysPaint)}
+
+        }
+
+    }
+
+
+    //canvas.drawImage()
+
+
+    return image
+}

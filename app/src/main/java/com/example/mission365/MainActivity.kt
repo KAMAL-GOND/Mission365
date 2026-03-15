@@ -39,12 +39,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             Mission365Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting2(
-                        //name = "Android",
-                        modifier = Modifier.padding(innerPadding),
-                        applicationContext,
-                        LocalDate.of(2003,8,6)
-                    )
+
+
+                    Greeting3(context = applicationContext, modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -78,5 +75,20 @@ fun Greeting2( modifier: Modifier = Modifier,context: Context,date: LocalDate) {
     WallpaperManager.getInstance(context).setBitmap(
         image.asAndroidBitmap(),null,true,
         WallpaperManager.FLAG_SYSTEM)
+
+}
+@Composable
+fun Greeting3( modifier: Modifier = Modifier,context: Context) {
+    var image = CustomizedImage(LocalDate.now().minusDays(10), LocalDate.now().plusDays(20),10,10,context)
+    Image(image,null)
+    Column(modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,) {
+        Button(onClick = {
+            scheduleCustomizedWallpaperWorker(context,LocalDate.now().minusDays(10), LocalDate.now().plusDays(20),10,10)
+            WallpaperManager.getInstance(context).setBitmap(
+                image.asAndroidBitmap(),null,true,
+                WallpaperManager.FLAG_SYSTEM)
+        }, colors = ButtonColors(Color.Blue,Color.White, Color.Blue,Color.White)) { Text("Apply")}
+    }
+
 
 }

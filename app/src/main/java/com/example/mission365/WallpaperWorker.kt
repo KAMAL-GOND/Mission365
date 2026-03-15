@@ -99,6 +99,7 @@ class yearWorker(context: Context, params: WorkerParameters) : Worker(context, p
     override fun doWork(): Result {
         val dateString = inputData.getString("birthDate") ?: return Result.failure()
         val date = LocalDate.parse(dateString)
+ 
 
         try{
 
@@ -144,5 +145,50 @@ fun scheduleYearWallpaperWorker(context: Context, birthDate: LocalDate) {
         )
 }
 
+//
+class CustomizedCalenderWorker(context: Context,params: WorkerParameters) : Worker(context,params){
+    override
+    fun doWork(): Result{
+        var EndDate = inputData.keyValueMap.get("endDate")
+        var endDate = LocalDate.parse(EndDate.toString())
+        var StartDate=inputData.keyValueMap.get("startDate")
+        var startDate= LocalDate.parse(StartDate.toString())
+        var rows = inputData.keyValueMap.get("rows")
+        var columns = inputData.keyValueMap.get("columns")
+
+        try{
+            var context=applicationContext
+            var image = CustomizedImage(startDate as LocalDate,endDate as LocalDate,rows as Int,columns as Int,context)
+
+            var manager = WallpaperManager.getInstance(context)
+            manager.setBitmap(image.asAndroidBitmap(),null,true, WallpaperManager.FLAG_SYSTEM)
 
 
+
+            return Result.success()
+        }
+        catch (e: Exception){
+            return Result.failure()
+        }
+    }}
+    fun scheduleCustomizedWallpaperWorker(context: Context, startDate: LocalDate,endDate: LocalDate,rows:Int, column:Int) {
+
+        val delay = delayUntilNextMidnight()
+        val data = Data.Builder().putString("starDate",startDate.toString()).putString("endDate",endDate.toString()).putInt("rows",rows).putInt("colums",column).build()
+
+        val request = PeriodicWorkRequestBuilder<yearWorker>(
+            1, TimeUnit.DAYS
+        )
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS).setInputData(data)
+            .build()
+
+
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "YearAge_wallpaper_job",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            request,
+
+
+            )
+    }
