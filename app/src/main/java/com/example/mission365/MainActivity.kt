@@ -54,7 +54,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier,context: Context) {
     Image(image,null)
     Column(modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,) {
         Button(onClick = {
-            scheduleWallpaperWorker(context)
+            scheduleWallpaperWorkerLock(context)
         }, colors = ButtonColors(Color.Blue,Color.White, Color.Blue,Color.White)) { Text("Apply")}
     }
     WallpaperManager.getInstance(context).setBitmap(
@@ -69,7 +69,7 @@ fun Greeting2( modifier: Modifier = Modifier,context: Context,date: LocalDate) {
     Image(image,null)
     Column(modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,) {
         Button(onClick = {
-            scheduleYearWallpaperWorker(context,date)
+            scheduleYearWallpaperWorkerHome(context,date)
         }, colors = ButtonColors(Color.Blue,Color.White, Color.Blue,Color.White)) { Text("Apply")}
     }
     WallpaperManager.getInstance(context).setBitmap(
@@ -83,7 +83,7 @@ fun Greeting3( modifier: Modifier = Modifier,context: Context) {
     Image(image,null)
     Column(modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,) {
         Button(onClick = {
-            scheduleCustomizedWallpaperWorker(context,LocalDate.now().minusDays(10), LocalDate.now().plusDays(20),10,10)
+            scheduleCustomizedWallpaperWorkerHome(context,LocalDate.now().minusDays(10), LocalDate.now().plusDays(20),10,10)
             WallpaperManager.getInstance(context).setBitmap(
                 image.asAndroidBitmap(),null,true,
                 WallpaperManager.FLAG_SYSTEM)
