@@ -1,11 +1,14 @@
 package com.example.mission365
 
+import android.app.Application
 import android.app.WallpaperManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
+import androidx.compose.foundation.layout.Box
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.ListenableWorker
 import androidx.work.WorkManager
 import androidx.work.Worker
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,10 +16,11 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import kotlin.coroutines.Continuation
 
-var WorkerStatus= MutableStateFlow<Result<Any>?>(null)
-var WorkerRemoveStatus= MutableStateFlow<Result<Any>?>(null)
 
-class veiwModel(var a : Context) : ViewModel() {
+
+class veiwModel(var a : Context ) : ViewModel() {
+    var WorkerStatus= MutableStateFlow<Status>(Status.IDLE)
+    var WorkerRemoveStatus=  MutableStateFlow<Status>(Status.IDLE)
     fun addYearLock(image : Bitmap) {
         viewModelScope.launch {
             try{
@@ -96,9 +100,11 @@ class veiwModel(var a : Context) : ViewModel() {
         viewModelScope.launch {
             try {
                 WorkManager.getInstance(a).cancelUniqueWork("Lock")
+                WorkerRemoveStatus.value= Status.SUCCESS
 
             } catch (e: Exception) {
                 Log.d("RemoveLock",e.toString())
+                WorkerRemoveStatus.value= Status.ERROR
 
 
             }
@@ -109,8 +115,10 @@ class veiwModel(var a : Context) : ViewModel() {
         viewModelScope.launch {
             try {
                 WorkManager.getInstance(a).cancelUniqueWork("Home")
+                WorkerRemoveStatus.value=Status.SUCCESS
 
             } catch (e: Exception) {
+                WorkerRemoveStatus.value= Status.ERROR
 
                 Log.d("RemoveHome",e.toString())
 
@@ -119,6 +127,15 @@ class veiwModel(var a : Context) : ViewModel() {
         }
 
     }
+
+    fun ResetRemoveWorkerStatus(){
+        WorkerRemoveStatus.value=Status.IDLE
+    }
 }
 
 //data class
+enum class Status {
+    IDLE,
+    SUCCESS,
+    ERROR
+}
