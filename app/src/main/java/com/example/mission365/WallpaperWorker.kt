@@ -101,7 +101,7 @@ fun delayUntilNextMidnight(): Long {
     return ChronoUnit.MILLIS.between(now,nextMidnight)
 }
 
-fun scheduleWallpaperWorkerLock(context: Context) {
+suspend fun scheduleWallpaperWorkerLock(context: Context) {
 
     val delay = delayUntilNextMidnight()
 
@@ -113,14 +113,14 @@ fun scheduleWallpaperWorkerLock(context: Context) {
 
     WorkManager.getInstance(context)
         .enqueueUniquePeriodicWork(
-            "age_wallpaper_job",
+            "Lock",
             ExistingPeriodicWorkPolicy.UPDATE,
             request,
 
         )
 }
 
-fun scheduleWallpaperWorkerHome(context: Context) {
+suspend fun scheduleWallpaperWorkerHome(context: Context) {
 
     val delay = delayUntilNextMidnight()
 
@@ -132,7 +132,7 @@ fun scheduleWallpaperWorkerHome(context: Context) {
 
     WorkManager.getInstance(context)
         .enqueueUniquePeriodicWork(
-            "age_wallpaper_job",
+            "Home",
             ExistingPeriodicWorkPolicy.UPDATE,
             request,
 
@@ -168,7 +168,7 @@ class lifeWorkerLock(context: Context, params: WorkerParameters) : Worker(contex
 
         catch (e : Exception){
 
-            Log.d("yearWallpaper",e.toString())
+            Log.d("Lock",e.toString())
             return Result.failure()
 
         }
@@ -195,14 +195,14 @@ class lifeWorkerHome(context: Context, params: WorkerParameters) : Worker(contex
 
         catch (e : Exception){
 
-            Log.d("yearWallpaper",e.toString())
+            Log.d("Home",e.toString())
             return Result.failure()
 
         }
         //return TODO("Provide the return value")
     }
 }
-fun scheduleYearWallpaperWorkerLock(context: Context, birthDate: LocalDate) {
+suspend fun scheduleYearWallpaperWorkerLock(context: Context, birthDate: LocalDate) {
 
     val delay = delayUntilNextWeekMidnight()
     val data = Data.Builder()
@@ -218,14 +218,14 @@ fun scheduleYearWallpaperWorkerLock(context: Context, birthDate: LocalDate) {
 
 
     WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        "YearAge_wallpaper_job",
+        "Lock",
         ExistingPeriodicWorkPolicy.UPDATE,
         request,
 
 
         )
 }
-fun scheduleYearWallpaperWorkerHome(context: Context, birthDate: LocalDate) {
+suspend fun scheduleYearWallpaperWorkerHome(context: Context, birthDate: LocalDate) {
 
     val delay = delayUntilNextWeekMidnight()
     val data = Data.Builder()
@@ -241,7 +241,7 @@ fun scheduleYearWallpaperWorkerHome(context: Context, birthDate: LocalDate) {
 
 
     WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        "YearAge_wallpaper_job",
+        "Home",
         ExistingPeriodicWorkPolicy.UPDATE,
         request,
 
@@ -301,7 +301,7 @@ class CustomizedCalenderWorkerLock(context: Context,params: WorkerParameters) : 
             return Result.failure()
         }
     }}
-    fun scheduleCustomizedWallpaperWorkerHome(context: Context, startDate: LocalDate,endDate: LocalDate,rows:Int, column:Int) {
+    suspend fun scheduleCustomizedWallpaperWorkerHome(context: Context, startDate: LocalDate,endDate: LocalDate,rows:Int, column:Int) {
 
         val delay = delayUntilNextMidnight()
         val data = Data.Builder().putString("starDate",startDate.toString()).putString("endDate",endDate.toString()).putInt("rows",rows).putInt("colums",column).build()
@@ -315,7 +315,7 @@ class CustomizedCalenderWorkerLock(context: Context,params: WorkerParameters) : 
 
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            "YearAge_wallpaper_job",
+            "Home",
             ExistingPeriodicWorkPolicy.UPDATE,
             request,
 
@@ -323,7 +323,7 @@ class CustomizedCalenderWorkerLock(context: Context,params: WorkerParameters) : 
             )
     }
 
-fun scheduleCustomizedWallpaperWorkerLock(context: Context, startDate: LocalDate,endDate: LocalDate,rows:Int, column:Int) {
+suspend fun scheduleCustomizedWallpaperWorkerLock(context: Context, startDate: LocalDate,endDate: LocalDate,rows:Int, column:Int) {
 
     val delay = delayUntilNextMidnight()
     val data = Data.Builder().putString("starDate",startDate.toString()).putString("endDate",endDate.toString()).putInt("rows",rows).putInt("colums",column).build()
@@ -337,7 +337,7 @@ fun scheduleCustomizedWallpaperWorkerLock(context: Context, startDate: LocalDate
 
 
     WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-        "YearAge_wallpaper_job",
+        "Lock",
         ExistingPeriodicWorkPolicy.UPDATE,
         request,
 
