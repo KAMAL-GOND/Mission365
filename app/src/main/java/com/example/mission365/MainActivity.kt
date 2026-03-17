@@ -30,6 +30,8 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.work.Worker
+import com.example.mission365.Screens.AgeCalenderScreen
+import com.example.mission365.Screens.CustomCalenderScreen
 import com.example.mission365.Screens.RemovableScreen
 
 import com.example.mission365.ui.theme.Mission365Theme
@@ -48,7 +50,9 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
 
-                    RemovableScreen(viewModel)
+                    //RemovableScreen(viewModel)
+                    //AgeCalenderScreen(viewModel)
+                    CustomCalenderScreen(viewModel)
                 }
             }
         }

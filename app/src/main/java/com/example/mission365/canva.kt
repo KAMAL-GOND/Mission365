@@ -11,6 +11,7 @@ import android.provider.CalendarContract
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -155,8 +156,8 @@ fun livingWeeks(birthDate: LocalDate): Int {
 fun CustomizedImage(startDate : LocalDate,endDate : LocalDate, Rows:Int, Column:Int, context: Context): ImageBitmap{
     var ScreenHeight = context.resources.displayMetrics.heightPixels
     var ScreenWidth =  context.resources.displayMetrics.widthPixels
-    var UpperSpace = ScreenHeight *0.20
-    var BottomSpace= ScreenHeight *0.03
+    var UpperSpace = ScreenHeight *0.25
+    var BottomSpace= ScreenHeight *0.10
     var GridHeight = ScreenHeight-UpperSpace-BottomSpace
     var GridWidth = ScreenWidth.toDouble() *0.95
 //    var CurrenDate= LocalDate.now()
@@ -179,8 +180,8 @@ fun CustomizedImage(startDate : LocalDate,endDate : LocalDate, Rows:Int, Column:
     var canvas = Canvas(image)
     for(i in 1..TotalDays){
 
-        var Rx = (i%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
-        var Ry = (i/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
+        var Rx = ((i-1)%Columns) * (cellSize) +(cellSize)/2 + 10f//
+        var Ry = ((i-1)/Columns) *(cellSize) + (cellSize)/2 + UpperSpace //
         //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
 
@@ -198,4 +199,26 @@ fun CustomizedImage(startDate : LocalDate,endDate : LocalDate, Rows:Int, Column:
 
 
     return image
+}
+
+fun CalculatRowsColumn(Days :Int, context: Context): Int {
+    var width  = context.resources.displayMetrics.widthPixels
+    var height  = context.resources.displayMetrics.heightPixels
+    var Area = (width*height)/Days
+    var Columns = width/ Math.sqrt(Area.toDouble())
+    return Columns.toInt() +1
+}
+fun calculateGrid(days: Int, context: Context): Pair<Int, Int> {
+
+    val width = context.resources.displayMetrics.widthPixels.toFloat()*0.95
+    val height = context.resources.displayMetrics.heightPixels.toFloat()*0.65
+
+    val aspectRatio = width / height
+
+    // Estimate columns using aspect ratio
+    val columns = kotlin.math.ceil(kotlin.math.sqrt(days * aspectRatio)).toInt()
+
+    val rows = kotlin.math.ceil(days.toDouble() / columns).toInt()
+
+    return Pair(rows, columns)
 }

@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.SecondaryTabRow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.ListenableWorker
@@ -19,16 +20,22 @@ import kotlin.coroutines.Continuation
 
 
 class veiwModel(var a : Context ) : ViewModel() {
-    var WorkerStatus= MutableStateFlow<Status>(Status.IDLE)
+    var WorkerYearStatus= MutableStateFlow<Status>(Status.IDLE)
     var WorkerRemoveStatus=  MutableStateFlow<Status>(Status.IDLE)
+
+    var WorkerAgeStatus=  MutableStateFlow<Status>(Status.IDLE)
+    var WorkerCoustomStatus=  MutableStateFlow<Status>(Status.IDLE)
+
     fun addYearLock(image : Bitmap) {
         viewModelScope.launch {
             try{
                 scheduleWallpaperWorkerLock(a)
                 WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_LOCK)
+                WorkerYearStatus.value= Status.SUCCESS
             }
             catch (e: Exception){
                 Log.d("YearLock",e.toString())
+                WorkerYearStatus.value= Status.ERROR
 
             }
         }
@@ -40,9 +47,11 @@ class veiwModel(var a : Context ) : ViewModel() {
             try{
                 scheduleWallpaperWorkerLock(a)
                 WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_SYSTEM)
+                WorkerYearStatus.value= Status.SUCCESS
             }
             catch (e: Exception){
                 Log.d("YearHome",e.toString())
+                WorkerYearStatus.value= Status.SUCCESS
 
             }
         }
@@ -53,9 +62,11 @@ class veiwModel(var a : Context ) : ViewModel() {
             try{
                 scheduleYearWallpaperWorkerLock(a,birthDate)
                 WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_LOCK)
+                WorkerAgeStatus.value= Status.SUCCESS
             }
             catch (e: Exception){
                 Log.d("LifeLock",e.toString())
+                WorkerAgeStatus.value= Status.ERROR
 
             }
         }
@@ -65,9 +76,11 @@ class veiwModel(var a : Context ) : ViewModel() {
             try{
                 scheduleYearWallpaperWorkerHome(a,birthDate)
                 WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_SYSTEM)
+                WorkerAgeStatus.value= Status.SUCCESS
             }
             catch (e: Exception){
                 Log.d("LifeHome",e.toString())
+                WorkerAgeStatus.value= Status.ERROR
 
             }
         }
@@ -77,9 +90,11 @@ class veiwModel(var a : Context ) : ViewModel() {
             try{
                 scheduleCustomizedWallpaperWorkerLock(a,StartDate,EndDate,row,colums)
                 WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_LOCK)
+                WorkerRemoveStatus.value= Status.SUCCESS
             }
             catch (e: Exception){
                 Log.d("CustomLock",e.toString())
+                WorkerCoustomStatus.value= Status.ERROR
 
             }
         }
@@ -89,9 +104,11 @@ class veiwModel(var a : Context ) : ViewModel() {
             try{
                 scheduleCustomizedWallpaperWorkerHome(a,StartDate,EndDate,row,colums)
                 WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_SYSTEM)
+                WorkerRemoveStatus.value= Status.SUCCESS
             }
             catch (e: Exception){
                 Log.d("CustomHome",e.toString())
+                WorkerCoustomStatus.value= Status.ERROR
 
             }
         }
@@ -130,6 +147,16 @@ class veiwModel(var a : Context ) : ViewModel() {
 
     fun ResetRemoveWorkerStatus(){
         WorkerRemoveStatus.value=Status.IDLE
+    }
+
+    fun ResetRemoveYearWorkerStatus(){
+        WorkerYearStatus.value=Status.IDLE
+    }
+    fun ResetRemoveAgeWorkerStatus(){
+        WorkerYearStatus.value=Status.IDLE
+    }
+    fun ResetRemoveCustomWorkerStatus(){
+        WorkerYearStatus.value=Status.IDLE
     }
 }
 
