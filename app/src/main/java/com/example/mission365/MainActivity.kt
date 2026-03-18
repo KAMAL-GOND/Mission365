@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -32,7 +33,9 @@ import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.work.Worker
 import com.example.mission365.Screens.AgeCalenderScreen
 import com.example.mission365.Screens.CustomCalenderScreen
+import com.example.mission365.Screens.HomeScreen
 import com.example.mission365.Screens.RemovableScreen
+import com.example.mission365.Screens.YearCalenderScreen
 
 import com.example.mission365.ui.theme.Mission365Theme
 import java.time.LocalDate
@@ -43,17 +46,30 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         var viewModel = veiwModel(this.applicationContext)
+        var a = this.applicationContext
 
         enableEdgeToEdge()
         setContent {
             Mission365Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold() {IT->
+                    //YearCalenderScreen(viewModel)
+                    HomeScreen(viewModel)
+                //Image(CustomizedImage(LocalDate.now().minusDays(10), LocalDate.now().plusDays(20),6,5,a),"null")
 
-
-                    //RemovableScreen(viewModel)
-                    //AgeCalenderScreen(viewModel)
-                    CustomCalenderScreen(viewModel)
                 }
+
+//                Box (){
+//                    Image(CreateWallpaper(a),"null")
+//                }
+                //CreateWallpaper(this.applicationContext)
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//
+//
+//                    //RemovableScreen(viewModel)
+//                    //AgeCalenderScreen(viewModel)
+//                    //CustomCalenderScreen(viewModel)
+//                    //HomeScreen(viewModel)
+//                }
             }
         }
     }

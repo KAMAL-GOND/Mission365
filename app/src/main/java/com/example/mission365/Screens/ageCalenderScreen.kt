@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -120,11 +121,12 @@ fun AgeCalenderScreen(viewModel: veiwModel){
         Column(modifier = Modifier.fillMaxSize().padding(10.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
 
             TextField(value = SecondDate.toString(), onValueChange = {}, readOnly = true, leadingIcon = {Icon(Icons.Default.DateRange,"null")},
-                placeholder = {Text("Birth Date")}, label = {Text("Birth Date")}, enabled = false,modifier = Modifier.fillMaxWidth(0.5f).clickable(
+                placeholder = {Text("Birth Date")}, label = {Text("Birth Date")}, enabled = false,modifier = Modifier.fillMaxWidth(0.7f).clickable(
                     onClick = {
                         CalenderState=true
                     }
                 ))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Button(onClick = {
                 if(SecondDate ==null){

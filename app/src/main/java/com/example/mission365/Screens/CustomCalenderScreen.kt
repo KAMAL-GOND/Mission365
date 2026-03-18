@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -173,12 +174,14 @@ fun CustomCalenderScreen(viewModel: veiwModel){
                         CalenderState1=true
                     }
                 ))
+            Spacer(modifier = Modifier.height(10.dp))
             TextField(value = SecondDate2.toString(), onValueChange = {}, readOnly = true, leadingIcon = {Icon(Icons.Default.DateRange,"null")},
                 placeholder = {Text("end Date")}, label = {Text("end Date")}, enabled = false,modifier = Modifier.fillMaxWidth(0.5f).clickable(
                     onClick = {
                         CalenderState2=true
                     }
                 ))
+            Spacer(modifier = Modifier.height(10.dp))
 //            TextField(value = lines.toString(), onValueChange = {lines = it.toInt()}, leadingIcon = {Icon(Icons.Default.Create,"null")}, readOnly = true,
 //                placeholder = {Text("Lines")}, label = {Text("Lines")}, enabled = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number) ,modifier = Modifier.fillMaxWidth(0.7f))
 

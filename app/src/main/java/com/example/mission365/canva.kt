@@ -58,10 +58,11 @@ fun CreateWallpaper(context : Context): ImageBitmap {
 
     var image = Bitmap.createBitmap(ScreenWidth,ScreenHeight, Bitmap.Config.ARGB_8888 ).asImageBitmap()
     var canvas = Canvas(image)
+
     for(i in 1..TotalDays){
         //var i=j+1;
-        var Rx = (i%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
-        var Ry = (i/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
+        var Rx = ((i-1)%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
+        var Ry = ((i-1)/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
         //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
         when{
@@ -113,8 +114,8 @@ fun CreateAgeWallpaper(context: Context, BirthDate : LocalDate): ImageBitmap {
     var canvas = Canvas(image)
     for(i in 1..Totalweeks){
 
-        var Rx = (i%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
-        var Ry = (i/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
+        var Rx = ((i-1)%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
+        var Ry = ((i-1)/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
         //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
 
