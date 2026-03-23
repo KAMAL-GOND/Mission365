@@ -4,9 +4,12 @@ import android.app.Application
 import android.app.WallpaperManager
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.ListenableWorker
@@ -90,7 +93,7 @@ class veiwModel(var a : Context ) : ViewModel() {
             try{
                 scheduleCustomizedWallpaperWorkerLock(a,StartDate,EndDate,row,colums)
                 WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_LOCK)
-                WorkerRemoveStatus.value= Status.SUCCESS
+                WorkerCoustomStatus.value= Status.SUCCESS
             }
             catch (e: Exception){
                 Log.d("CustomLock",e.toString())
@@ -104,7 +107,7 @@ class veiwModel(var a : Context ) : ViewModel() {
             try{
                 scheduleCustomizedWallpaperWorkerHome(a,StartDate,EndDate,row,colums)
                 WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_SYSTEM)
-                WorkerRemoveStatus.value= Status.SUCCESS
+                WorkerCoustomStatus.value= Status.SUCCESS
             }
             catch (e: Exception){
                 Log.d("CustomHome",e.toString())
@@ -117,6 +120,8 @@ class veiwModel(var a : Context ) : ViewModel() {
         viewModelScope.launch {
             try {
                 WorkManager.getInstance(a).cancelUniqueWork("Lock")
+                var image= defaultImage(a).asAndroidBitmap()
+                WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_LOCK)
                 WorkerRemoveStatus.value= Status.SUCCESS
 
             } catch (e: Exception) {
@@ -132,6 +137,8 @@ class veiwModel(var a : Context ) : ViewModel() {
         viewModelScope.launch {
             try {
                 WorkManager.getInstance(a).cancelUniqueWork("Home")
+                var image= defaultImage(a).asAndroidBitmap()
+                WallpaperManager.getInstance(a).setBitmap(image,null,true, WallpaperManager.FLAG_SYSTEM)
                 WorkerRemoveStatus.value=Status.SUCCESS
 
             } catch (e: Exception) {
@@ -153,10 +160,10 @@ class veiwModel(var a : Context ) : ViewModel() {
         WorkerYearStatus.value=Status.IDLE
     }
     fun ResetRemoveAgeWorkerStatus(){
-        WorkerYearStatus.value=Status.IDLE
+        WorkerAgeStatus.value=Status.IDLE
     }
     fun ResetRemoveCustomWorkerStatus(){
-        WorkerYearStatus.value=Status.IDLE
+        WorkerCoustomStatus.value=Status.IDLE
     }
 }
 

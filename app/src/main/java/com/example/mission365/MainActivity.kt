@@ -1,44 +1,29 @@
 package com.example.mission365
 
-import android.app.WallpaperManager
-import android.content.Context
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.Wallpapers
-import androidx.work.Worker
-import com.example.mission365.Screens.AgeCalenderScreen
-import com.example.mission365.Screens.CustomCalenderScreen
+import androidx.compose.ui.unit.dp
 import com.example.mission365.Screens.HomeScreen
-import com.example.mission365.Screens.RemovableScreen
-import com.example.mission365.Screens.YearCalenderScreen
+import com.example.mission365.Screens.navigation.navApp
 
 import com.example.mission365.ui.theme.Mission365Theme
-import java.time.LocalDate
 
 class MainActivity : ComponentActivity() {
 
@@ -50,11 +35,15 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+
             Mission365Theme {
-                Scaffold() {IT->
-                    //YearCalenderScreen(viewModel)
-                    HomeScreen(viewModel)
-                //Image(CustomizedImage(LocalDate.now().minusDays(10), LocalDate.now().plusDays(20),6,5,a),"null")
+
+
+
+                Scaffold() {it->
+
+                    navApp(viewModel, Modifier.padding(it))
+
 
                 }
 
@@ -117,5 +106,51 @@ class MainActivity : ComponentActivity() {
 //        }, colors = ButtonColors(Color.Blue,Color.White, Color.Blue,Color.White)) { Text("Apply")}
 //    }}
 //
+//@Composable
+//fun AppBackground(content: @Composable () -> Unit) {
+//    Box(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(
+//                brush = Brush.verticalGradient(
+//                    colors = listOf(
+//                        Color(0xFF8B0000),
+//                        Color(0xFF862020),
+//                        Color.Black
+//                    )
+//                )
+//            )
+//    ) {
+//        content()
+//    }
+//}
 
 
+@Composable
+fun AppButton(
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor =  Color(0xFF8B0000),
+            contentColor=Color.White
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Text(text)
+    }
+}
+//object AppButtonDefaults {
+//
+//    @Composable
+//    fun primaryButtonColors() = ButtonDefaults.buttonColors(
+//        containerColor = MaterialTheme.colorScheme.primary,
+//        contentColor = MaterialTheme.colorScheme.onPrimary
+//    )
+//}
+//val RedBlackColorScheme = lightColorScheme(
+//    primary = Color(0xFF8B0000),     // dark red
+//    onPrimary = Color.White
+//)

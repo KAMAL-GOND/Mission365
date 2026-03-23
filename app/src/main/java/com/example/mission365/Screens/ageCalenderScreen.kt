@@ -3,7 +3,6 @@ package com.example.mission365.Screens
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -34,10 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.mission365.CreateAgeWallpaper
-import com.example.mission365.CreateWallpaper
 import com.example.mission365.Status
 import com.example.mission365.veiwModel
 import java.time.Instant
@@ -46,7 +44,7 @@ import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AgeCalenderScreen(viewModel: veiwModel){
+fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
 
     val workerStatus by viewModel.WorkerAgeStatus.collectAsState()
     var context =LocalContext.current

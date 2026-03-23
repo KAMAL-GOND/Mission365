@@ -1,7 +1,5 @@
 package com.example.mission365.Screens
 
-import android.graphics.Bitmap
-import android.media.Image
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,12 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
 import com.example.mission365.CreateWallpaper
 import com.example.mission365.Status
 import com.example.mission365.veiwModel
 
 @Composable
-fun YearCalenderScreen(viewModel: veiwModel){
+fun YearCalenderScreen(viewModel: veiwModel, navController: NavHostController){
     var image: ImageBitmap=CreateWallpaper(viewModel.a)
     val workerStatus by viewModel.WorkerYearStatus.collectAsState()
     var context =LocalContext.current

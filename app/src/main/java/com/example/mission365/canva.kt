@@ -7,7 +7,10 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Typeface
+import android.media.Image
+import android.os.Build
 import android.provider.CalendarContract
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +24,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toColorLong
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextPainter
 import androidx.compose.ui.text.TextPainter.paint
@@ -33,12 +38,13 @@ import java.time.temporal.ChronoUnit
 
 //@Preview(showBackground = true, showSystemUi = true, )
 
+@RequiresApi(Build.VERSION_CODES.Q)
 fun CreateWallpaper(context : Context): ImageBitmap {
     //var context = LocalContext
     var ScreenHeight = context.resources.displayMetrics.heightPixels
     var ScreenWidth =  context.resources.displayMetrics.widthPixels
-    var UpperSpace = ScreenHeight *0.30
-    var BottomSpace= ScreenHeight *0.08
+    var UpperSpace = ScreenHeight *0.25
+    var BottomSpace= ScreenHeight *0.12
     var GridHeight = ScreenHeight-UpperSpace-BottomSpace
     var GridWidth = ScreenWidth.toDouble() *0.95
     var CurrenDate= LocalDate.now()
@@ -58,10 +64,11 @@ fun CreateWallpaper(context : Context): ImageBitmap {
 
     var image = Bitmap.createBitmap(ScreenWidth,ScreenHeight, Bitmap.Config.ARGB_8888 ).asImageBitmap()
     var canvas = Canvas(image)
+    canvas.nativeCanvas.drawColor(Color.Black.toColorLong())
 
     for(i in 1..TotalDays){
-        //var i=j+1;
-        var Rx = ((i-1)%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
+        //var i=j+1
+        var Rx = ((i-1)%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 + 10f //
         var Ry = ((i-1)/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
         //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
@@ -73,6 +80,10 @@ fun CreateWallpaper(context : Context): ImageBitmap {
         }
 
     }
+    var text = (TotalDays-todaysDate).toString()+" days left"
+
+    var textPaint = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FFA500") }
+    canvas.nativeCanvas.drawText(text,ScreenWidth/2.0f,ScreenHeight*0.9f,textPaint)
 
 
     //canvas.drawImage()
@@ -86,6 +97,7 @@ fun CreateWallpaper(context : Context): ImageBitmap {
 
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 fun CreateAgeWallpaper(context: Context, BirthDate : LocalDate): ImageBitmap {
     //var context = LocalContext
     var ScreenHeight = context.resources.displayMetrics.heightPixels
@@ -112,9 +124,10 @@ fun CreateAgeWallpaper(context: Context, BirthDate : LocalDate): ImageBitmap {
 
     var image = Bitmap.createBitmap(ScreenWidth,ScreenHeight, Bitmap.Config.ARGB_8888 ).asImageBitmap()
     var canvas = Canvas(image)
+    canvas.nativeCanvas.drawColor(Color.Black.toColorLong())
     for(i in 1..Totalweeks){
 
-        var Rx = ((i-1)%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 //
+        var Rx = ((i-1)%Columns) * (GridWidth/Columns) +(GridWidth/Columns)/2 + 10f//
         var Ry = ((i-1)/Columns) *(GridHeight/Rows) + (GridHeight/Rows)/2 + UpperSpace//
         //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
@@ -127,6 +140,15 @@ fun CreateAgeWallpaper(context: Context, BirthDate : LocalDate): ImageBitmap {
         }
 
     }
+    var text = (((Totalweeks-livedWeeks)/Totalweeks)).toString()+" % life left"
+
+    var textPaint = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FFA500") }
+    canvas.nativeCanvas.drawText(text,ScreenWidth/2.0f,ScreenHeight*0.17f,textPaint)
+
+
+    //canvas.drawImage()
+
+
 
 
     //canvas.drawImage()
@@ -154,7 +176,8 @@ fun livingWeeks(birthDate: LocalDate): Int {
     return ChronoUnit.WEEKS.between(birthDate, LocalDate.now()).toInt()
 }
 
-fun CustomizedImage(startDate : LocalDate,endDate : LocalDate, Rows:Int, Column:Int, context: Context): ImageBitmap{
+@RequiresApi(Build.VERSION_CODES.Q)
+fun CustomizedImage(startDate : LocalDate, endDate : LocalDate, Rows:Int, Column:Int, context: Context): ImageBitmap{
     var ScreenHeight = context.resources.displayMetrics.heightPixels
     var ScreenWidth =  context.resources.displayMetrics.widthPixels
     var UpperSpace = ScreenHeight *0.25
@@ -179,6 +202,7 @@ fun CustomizedImage(startDate : LocalDate,endDate : LocalDate, Rows:Int, Column:
 
     var image = Bitmap.createBitmap(ScreenWidth,ScreenHeight, Bitmap.Config.ARGB_8888 ).asImageBitmap()
     var canvas = Canvas(image)
+    canvas.nativeCanvas.drawColor(Color.Black.toColorLong())
     for(i in 1..TotalDays){
 
         var Rx = ((i-1)%Columns) * (cellSize) +(cellSize)/2 + 10f//
@@ -194,6 +218,15 @@ fun CustomizedImage(startDate : LocalDate,endDate : LocalDate, Rows:Int, Column:
         }
 
     }
+    var text = (TotalDays-livedDays).toString()+" days left"
+
+    var textPaint = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FFA500") }
+    canvas.nativeCanvas.drawText(text,ScreenWidth/2.0f,ScreenHeight*0.91f,textPaint)
+
+
+    //canvas.drawImage()
+
+    return image;
 
 
     //canvas.drawImage()
@@ -222,4 +255,16 @@ fun calculateGrid(days: Int, context: Context): Pair<Int, Int> {
     val rows = kotlin.math.ceil(days.toDouble() / columns).toInt()
 
     return Pair(rows, columns)
+}
+
+@RequiresApi(Build.VERSION_CODES.Q)
+fun defaultImage(context: Context) : ImageBitmap {
+    var width= context.resources.displayMetrics.widthPixels
+    var hieght = context.resources.displayMetrics.heightPixels
+    var image = Bitmap.createBitmap(width,hieght, Bitmap.Config.ARGB_8888 ).asImageBitmap()
+    var canvas = Canvas(image)
+
+
+    canvas.nativeCanvas.drawColor(Color.Black.toColorLong())
+    return image
 }

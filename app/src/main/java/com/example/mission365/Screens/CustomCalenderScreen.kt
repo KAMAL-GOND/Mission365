@@ -10,10 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
@@ -37,10 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.mission365.CalculatRowsColumn
-import com.example.mission365.CreateAgeWallpaper
+import androidx.navigation.NavHostController
 import com.example.mission365.CustomizedImage
 import com.example.mission365.Status
 import com.example.mission365.calculateGrid
@@ -52,7 +47,7 @@ import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomCalenderScreen(viewModel: veiwModel){
+fun CustomCalenderScreen(viewModel: veiwModel, navController: NavHostController){
 
     val workerStatus by viewModel.WorkerCoustomStatus.collectAsState()
     var context =LocalContext.current
@@ -72,12 +67,12 @@ fun CustomCalenderScreen(viewModel: veiwModel){
 
             Status.SUCCESS  -> {
                 Toast.makeText(context, "Done", Toast.LENGTH_LONG).show()
-                viewModel.ResetRemoveAgeWorkerStatus()
+                viewModel.ResetRemoveCustomWorkerStatus()
             }
 
             Status.ERROR  -> {
                 Toast.makeText(context, "Some error occurred", Toast.LENGTH_LONG).show()
-                viewModel.ResetRemoveAgeWorkerStatus()
+                viewModel.ResetRemoveCustomWorkerStatus()
             }
 
             Status.IDLE -> {}
