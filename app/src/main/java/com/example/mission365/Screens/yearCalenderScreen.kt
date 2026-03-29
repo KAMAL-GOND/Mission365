@@ -27,6 +27,7 @@ import androidx.navigation.NavHostController
 import com.example.mission365.BannerAdId
 import com.example.mission365.BannerUtils.BannerAd
 import com.example.mission365.CreateWallpaper
+import com.example.mission365.IntesAdId
 import com.example.mission365.Status
 import com.example.mission365.veiwModel
 import com.google.android.gms.ads.AdRequest
@@ -42,7 +43,7 @@ fun YearCalenderScreen(viewModel: veiwModel, navController: NavHostController){
 
     val adView = remember { 
         AdView(viewModel.a).apply {
-            adUnitId = "ca-app-pub-3940256099942544/9214589741"
+            adUnitId = BannerAdId
             setAdSize(AdSize.BANNER)
             loadAd(AdRequest.Builder().build())
         }
@@ -53,7 +54,7 @@ fun YearCalenderScreen(viewModel: veiwModel, navController: NavHostController){
     // AD2
     InterstitialAd.load(
         /* context = */ viewModel.a,
-        /* adUnitId = */ "ca-app-pub-3940256099942544/1033173712",
+        /* adUnitId = */ IntesAdId,
         /* adRequest = */ AdRequest.Builder().build(),
         /* loadCallback = */
         object : InterstitialAdLoadCallback() {

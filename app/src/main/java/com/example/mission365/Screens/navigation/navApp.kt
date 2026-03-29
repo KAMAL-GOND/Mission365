@@ -1,5 +1,6 @@
 package com.example.mission365.Screens.navigation
 
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -12,11 +13,12 @@ import com.example.mission365.Screens.YearCalenderScreen
 import com.example.mission365.veiwModel
 
 @Composable
-fun navApp(appVeiwModel : veiwModel,modifier: Modifier){
+fun navApp(appVeiwModel : veiwModel,){
     var navController = rememberNavController()
+    Scaffold() { pa->
     NavHost(navController, startDestination = Routes.HomeScreen){
         composable <Routes.HomeScreen>{
-            HomeScreen(appVeiwModel,navController)
+            HomeScreen(appVeiwModel,navController,pa)
 
 
         }
@@ -32,5 +34,6 @@ fun navApp(appVeiwModel : veiwModel,modifier: Modifier){
             CustomCalenderScreen(appVeiwModel,navController)
 
         }
+    }
     }
 }

@@ -82,8 +82,9 @@ fun CreateWallpaper(context : Context): ImageBitmap {
     }
     var text = (TotalDays-todaysDate).toString()+" days left"
 
-    var textPaint = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FFA500") }
-    canvas.nativeCanvas.drawText(text,ScreenWidth/2.0f,ScreenHeight*0.9f,textPaint)
+    var textPaint = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FFA500");textSize=60f;textAlign=
+        android.graphics.Paint.Align.CENTER }
+    canvas.nativeCanvas.drawText(text,((ScreenWidth/2.0f)),ScreenHeight*0.2f,textPaint)
 
 
     //canvas.drawImage()
@@ -142,7 +143,8 @@ fun CreateAgeWallpaper(context: Context, BirthDate : LocalDate): ImageBitmap {
     }
     var text = (((Totalweeks-livedWeeks)/Totalweeks)).toString()+" % life left"
 
-    var textPaint = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FFA500") }
+    var textPaint = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FFA500");textSize=60f;textAlign=
+        android.graphics.Paint.Align.CENTER  }
     canvas.nativeCanvas.drawText(text,ScreenWidth/2.0f,ScreenHeight*0.17f,textPaint)
 
 
@@ -220,8 +222,9 @@ fun CustomizedImage(startDate : LocalDate, endDate : LocalDate, Rows:Int, Column
     }
     var text = (TotalDays-livedDays).toString()+" days left"
 
-    var textPaint = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FFA500") }
-    canvas.nativeCanvas.drawText(text,ScreenWidth/2.0f,ScreenHeight*0.91f,textPaint)
+    var textPaint = android.graphics.Paint().apply { textSize=60f; color = android.graphics.Color.parseColor("#FFA500");textAlign=
+        android.graphics.Paint.Align.CENTER  }
+    canvas.nativeCanvas.drawText(text,ScreenWidth/2.0f,ScreenHeight*0.20f,textPaint,)
 
 
     //canvas.drawImage()

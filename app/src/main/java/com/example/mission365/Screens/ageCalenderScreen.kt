@@ -1,6 +1,8 @@
 package com.example.mission365.Screens
 
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,14 +32,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.mission365.AppButton
+import com.example.mission365.Appid
+import com.example.mission365.BannerAdId
+import com.example.mission365.BannerUtils.BannerAd
 import com.example.mission365.CreateAgeWallpaper
+//import com.example.mission365.IntesAd
+import com.example.mission365.IntesAdId
 import com.example.mission365.Status
 import com.example.mission365.veiwModel
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import kotlinx.coroutines.time.delay
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -45,6 +62,34 @@ import java.time.ZoneId
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
+    val adView = remember {
+        AdView(viewModel.a).apply {
+            adUnitId = BannerAdId
+            setAdSize(AdSize.BANNER)
+            loadAd(AdRequest.Builder().build())
+        }
+    }
+
+    var interstitialAd: InterstitialAd?=null
+
+    // AD2
+    InterstitialAd.load(
+        /* context = */ viewModel.a,
+        /* adUnitId = */ IntesAdId,
+        /* adRequest = */ AdRequest.Builder().build(),
+        /* loadCallback = */
+        object : InterstitialAdLoadCallback() {
+            override fun onAdLoaded(ad: InterstitialAd) {
+                Log.d("intesAdd", "Ad was loaded.")
+                interstitialAd = ad
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d("intesAddAFail", adError.message)
+                interstitialAd = null
+            }
+        },
+    )
 
     val workerStatus by viewModel.WorkerAgeStatus.collectAsState()
     var context =LocalContext.current
@@ -58,11 +103,13 @@ fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
             Status.SUCCESS  -> {
                 Toast.makeText(context, "Done", Toast.LENGTH_LONG).show()
                 viewModel.ResetRemoveAgeWorkerStatus()
+                navController.popBackStack()
             }
 
             Status.ERROR  -> {
                 Toast.makeText(context, "Some error occurred", Toast.LENGTH_LONG).show()
                 viewModel.ResetRemoveAgeWorkerStatus()
+                navController.popBackStack()
             }
 
             Status.IDLE -> {}
@@ -73,9 +120,13 @@ fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
         var image: ImageBitmap= CreateAgeWallpaper(viewModel.a,Date!!)
         androidx.compose.foundation.Image(image,"null")
         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,) {
+            BannerAd(adView)
+
             Spacer(Modifier.fillMaxHeight(0.7f))
             Button(onClick = {
                 viewModel.addLifeHome(Date!!,image.asAndroidBitmap())
+
+                interstitialAd?.show(viewModel.AddContext)
 
             }) {
                 Text("Apply HomeScreen")
@@ -83,6 +134,7 @@ fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
 
             Button(onClick = {
                 viewModel.addLifeLock(Date!!,image.asAndroidBitmap())
+                interstitialAd?.show(viewModel.AddContext)
 
             }) {
                 Text("Apply LockScreen")
@@ -116,7 +168,14 @@ fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
                 DatePicker(state = datePickerState)
             }
         }
-        Column(modifier = Modifier.fillMaxSize().padding(10.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
+        Column(modifier = Modifier.fillMaxSize().padding(10.dp).background(brush = Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFF8B0000),
+                Color(0xFFA42828),
+                Color.Black
+            )
+        )), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
+            BannerAd(adView)
 
             TextField(value = SecondDate.toString(), onValueChange = {}, readOnly = true, leadingIcon = {Icon(Icons.Default.DateRange,"null")},
                 placeholder = {Text("Birth Date")}, label = {Text("Birth Date")}, enabled = false,modifier = Modifier.fillMaxWidth(0.7f).clickable(
@@ -126,16 +185,24 @@ fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
                 ))
             Spacer(modifier = Modifier.height(10.dp))
 
-            Button(onClick = {
+//            Button(onClick = {
+//                if(SecondDate ==null){
+//                Toast.makeText(context,"BirthDAte Can not be empty", Toast.LENGTH_LONG).show()
+//            }
+//            else{
+//                Date=SecondDate
+//
+//            }}) {
+//                Text("Generate")
+//            }
+            AppButton("Generate", onClick ={
                 if(SecondDate ==null){
-                Toast.makeText(context,"BirthDAte Can not be empty", Toast.LENGTH_LONG).show()
-            }
-            else{
-                Date=SecondDate
+                    Toast.makeText(context,"BirthDAte Can not be empty", Toast.LENGTH_LONG).show()
+                }
+                else{
+                    Date=SecondDate
 
-            }}) {
-                Text("Generate")
-            }
+                }} )
         }
 
     }

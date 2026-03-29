@@ -1,28 +1,20 @@
 package com.example.mission365
 
-import android.app.Application
 import android.app.WallpaperManager
 import android.content.Context
 import android.graphics.Bitmap
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.ListenableWorker
 import androidx.work.WorkManager
-import androidx.work.Worker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import kotlin.coroutines.Continuation
 
 
-
-class veiwModel(var a : Context ) : ViewModel() {
+class veiwModel(var a: Context, addContext: MainActivity) : ViewModel() {
+    var AddContext = addContext
     var WorkerYearStatus= MutableStateFlow<Status>(Status.IDLE)
     var WorkerRemoveStatus=  MutableStateFlow<Status>(Status.IDLE)
 
