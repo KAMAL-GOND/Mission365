@@ -206,14 +206,14 @@ fun CustomCalenderScreen(viewModel: veiwModel, navController: NavHostController)
                 DatePicker(state = datePickerState)
             }
         }
-        Column(modifier = Modifier.fillMaxSize().padding(10.dp).background(Brush.verticalGradient(
-            listOf(Color(1111)
-                ,Color(2222)
+        Column(modifier = Modifier.fillMaxSize().background(Brush.verticalGradient(
+            listOf(Color(0xFF626262),
+                Color(0xFF2F2F2F)
                 ,Color.Black)
         )), horizontalAlignment = Alignment.CenterHorizontally,){
             BannerAd(adView)
-            var height= viewModel.a.resources.displayMetrics.heightPixels
-            Spacer(Modifier.height((height*0.4).dp))
+            Column(Modifier.fillMaxSize().padding(10.dp),horizontalAlignment=Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
+
 
             TextField(value = SecondDate1.toString(), onValueChange = {}, readOnly = true, leadingIcon = {Icon(Icons.Default.DateRange,"null")},
                 placeholder = {Text("Start Date")}, label = {Text("start Date")}, enabled = false,modifier = Modifier.fillMaxWidth(0.5f).clickable(
@@ -243,7 +243,7 @@ fun CustomCalenderScreen(viewModel: veiwModel, navController: NavHostController)
 
             }})
 
-        }
+        }}
 
     }
 

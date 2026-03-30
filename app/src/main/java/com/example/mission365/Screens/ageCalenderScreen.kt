@@ -168,16 +168,15 @@ fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
                 DatePicker(state = datePickerState)
             }
         }
-        Column(modifier = Modifier.fillMaxSize().padding(10.dp).background(brush = Brush.verticalGradient(
-            colors = listOf(
-                Color(0xFF8B0000),
-                Color(0xFFA42828),
-                Color.Black
-            )
+        Column(modifier = Modifier.fillMaxSize().background(Brush.verticalGradient(
+            listOf(Color(0xFF626262),
+                Color(0xFF2F2F2F)
+                ,Color.Black)
         )), horizontalAlignment = Alignment.CenterHorizontally,){
             BannerAd(adView)
-            var height= viewModel.a.resources.displayMetrics.heightPixels
-            Spacer(Modifier.height((height*0.4).dp))
+            Column(Modifier.fillMaxSize().padding(10.dp),horizontalAlignment=Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
+
+
 
             TextField(value = SecondDate.toString(), onValueChange = {}, readOnly = true, leadingIcon = {Icon(Icons.Default.DateRange,"null")},
                 placeholder = {Text("Birth Date")}, label = {Text("Birth Date")}, enabled = false,modifier = Modifier.fillMaxWidth(0.7f).clickable(
@@ -207,6 +206,6 @@ fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
                 }} )
         }
 
-    }
+    }}
 
 }

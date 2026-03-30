@@ -1,6 +1,7 @@
 package com.example.mission365
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -18,19 +19,30 @@ import com.example.mission365.Screens.navigation.navApp
 
 import com.example.mission365.ui.theme.Mission365Theme
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.analytics
+import com.google.firebase.installations.FirebaseInstallations
 
 class MainActivity : ComponentActivity() {
+    private lateinit var analytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+
+
+
         super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
         MobileAds.initialize(this) {}
         var addContext = this@MainActivity
-        var viewModel = veiwModel(this.applicationContext,addContext)
+        var viewModel = veiwModel(addContext)
+
         var a = this.applicationContext
 
         enableEdgeToEdge()
         setContent {
+
 
 
             Mission365Theme {

@@ -208,7 +208,7 @@ fun CustomizedImage(startDate : LocalDate, endDate : LocalDate, Rows:Int, Column
     for(i in 1..TotalDays){
 
         var Rx = ((i-1)%Columns) * (cellSize) +(cellSize)/2 + 10f//
-        var Ry = ((i)/Columns) *(cellSize) + (cellSize)/2 + UpperSpace //
+        var Ry = ((i-1)/Columns) *(cellSize) + (cellSize)/2 + UpperSpace //
         //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
 

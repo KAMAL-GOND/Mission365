@@ -13,8 +13,9 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 
-class veiwModel(var a: Context, addContext: MainActivity) : ViewModel() {
+class veiwModel(addContext: MainActivity) : ViewModel() {
     var AddContext = addContext
+    var a = AddContext.applicationContext
     var WorkerYearStatus= MutableStateFlow<Status>(Status.IDLE)
     var WorkerRemoveStatus=  MutableStateFlow<Status>(Status.IDLE)
 
