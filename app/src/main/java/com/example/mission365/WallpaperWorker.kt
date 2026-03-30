@@ -258,7 +258,7 @@ class CustomizedCalenderWorkerHome(context: Context,params: WorkerParameters) : 
         var StartDate=inputData.keyValueMap.get("startDate")
         var startDate= LocalDate.parse(StartDate.toString())
         var rows = inputData.keyValueMap.get("rows")
-        var columns = inputData.keyValueMap.get("columns")
+        var columns = inputData.keyValueMap.get("colums")
 
         try{
             var context=applicationContext
@@ -284,7 +284,7 @@ class CustomizedCalenderWorkerLock(context: Context,params: WorkerParameters) : 
         var StartDate=inputData.keyValueMap.get("startDate")
         var startDate= LocalDate.parse(StartDate.toString())
         var rows = inputData.keyValueMap.get("rows")
-        var columns = inputData.keyValueMap.get("columns")
+        var columns = inputData.keyValueMap.get("colums")
 
         try{
             var context=applicationContext
@@ -304,7 +304,7 @@ class CustomizedCalenderWorkerLock(context: Context,params: WorkerParameters) : 
     suspend fun scheduleCustomizedWallpaperWorkerHome(context: Context, startDate: LocalDate,endDate: LocalDate,rows:Int, column:Int) {
 
         val delay = delayUntilNextMidnight()
-        val data = Data.Builder().putString("starDate",startDate.toString()).putString("endDate",endDate.toString()).putInt("rows",rows).putInt("colums",column).build()
+        val data = Data.Builder().putString("startDate",startDate.toString()).putString("endDate",endDate.toString()).putInt("rows",rows).putInt("colums",column).build()
 
         val request = PeriodicWorkRequestBuilder<CustomizedCalenderWorkerHome>(
             1, TimeUnit.DAYS
@@ -326,7 +326,7 @@ class CustomizedCalenderWorkerLock(context: Context,params: WorkerParameters) : 
 suspend fun scheduleCustomizedWallpaperWorkerLock(context: Context, startDate: LocalDate,endDate: LocalDate,rows:Int, column:Int) {
 
     val delay = delayUntilNextMidnight()
-    val data = Data.Builder().putString("starDate",startDate.toString()).putString("endDate",endDate.toString()).putInt("rows",rows).putInt("colums",column).build()
+    val data = Data.Builder().putString("startDate",startDate.toString()).putString("endDate",endDate.toString()).putInt("rows",rows).putInt("colums",column).build()
 
     val request = PeriodicWorkRequestBuilder<CustomizedCalenderWorkerLock>(
         1, TimeUnit.DAYS

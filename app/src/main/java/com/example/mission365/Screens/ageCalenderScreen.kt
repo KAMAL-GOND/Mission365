@@ -174,8 +174,10 @@ fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
                 Color(0xFFA42828),
                 Color.Black
             )
-        )), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
+        )), horizontalAlignment = Alignment.CenterHorizontally,){
             BannerAd(adView)
+            var height= viewModel.a.resources.displayMetrics.heightPixels
+            Spacer(Modifier.height((height*0.4).dp))
 
             TextField(value = SecondDate.toString(), onValueChange = {}, readOnly = true, leadingIcon = {Icon(Icons.Default.DateRange,"null")},
                 placeholder = {Text("Birth Date")}, label = {Text("Birth Date")}, enabled = false,modifier = Modifier.fillMaxWidth(0.7f).clickable(

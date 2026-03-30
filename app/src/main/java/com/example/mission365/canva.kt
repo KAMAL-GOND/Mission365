@@ -141,7 +141,7 @@ fun CreateAgeWallpaper(context: Context, BirthDate : LocalDate): ImageBitmap {
         }
 
     }
-    var text = (((Totalweeks-livedWeeks)/Totalweeks)).toString()+" % life left"
+    var text = (((Totalweeks-livedWeeks)*100/Totalweeks)).toString()+" % life left"
 
     var textPaint = android.graphics.Paint().apply { color = android.graphics.Color.parseColor("#FFA500");textSize=60f;textAlign=
         android.graphics.Paint.Align.CENTER  }
@@ -208,7 +208,7 @@ fun CustomizedImage(startDate : LocalDate, endDate : LocalDate, Rows:Int, Column
     for(i in 1..TotalDays){
 
         var Rx = ((i-1)%Columns) * (cellSize) +(cellSize)/2 + 10f//
-        var Ry = ((i-1)/Columns) *(cellSize) + (cellSize)/2 + UpperSpace //
+        var Ry = ((i)/Columns) *(cellSize) + (cellSize)/2 + UpperSpace //
         //canvas.drawCircle(Rx.toFloat(),Ry.toFloat(),  cellSize.toFloat()*0.3f , paint)
 
 
@@ -235,7 +235,7 @@ fun CustomizedImage(startDate : LocalDate, endDate : LocalDate, Rows:Int, Column
     //canvas.drawImage()
 
 
-    return image
+
 }
 
 fun CalculatRowsColumn(Days :Int, context: Context): Int {

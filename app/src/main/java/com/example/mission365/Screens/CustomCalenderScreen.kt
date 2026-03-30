@@ -210,8 +210,10 @@ fun CustomCalenderScreen(viewModel: veiwModel, navController: NavHostController)
             listOf(Color(1111)
                 ,Color(2222)
                 ,Color.Black)
-        )), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
+        )), horizontalAlignment = Alignment.CenterHorizontally,){
             BannerAd(adView)
+            var height= viewModel.a.resources.displayMetrics.heightPixels
+            Spacer(Modifier.height((height*0.4).dp))
 
             TextField(value = SecondDate1.toString(), onValueChange = {}, readOnly = true, leadingIcon = {Icon(Icons.Default.DateRange,"null")},
                 placeholder = {Text("Start Date")}, label = {Text("start Date")}, enabled = false,modifier = Modifier.fillMaxWidth(0.5f).clickable(
