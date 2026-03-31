@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,6 +40,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.work.impl.PRUNE_THRESHOLD_MILLIS
 import com.example.mission365.AppButton
 import com.example.mission365.Appid
 import com.example.mission365.BannerAdId
@@ -57,6 +59,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlinx.coroutines.time.delay
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -145,16 +148,23 @@ fun AgeCalenderScreen(viewModel: veiwModel, navController: NavHostController){
     else{
         var SecondDate by remember { mutableStateOf<LocalDate?>(null)  }
         if(CalenderState==true){
-            val datePickerState = rememberDatePickerState()
+            val datePickerState = rememberDatePickerState(
+
+                initialDisplayMode = DisplayMode.Picker
+            )
 
 
             DatePickerDialog(
                 onDismissRequest = {CalenderState=false},
                 confirmButton = {
                     TextButton(onClick = {
-                        SecondDate= Instant.ofEpochMilli(datePickerState.selectedDateMillis!!).atZone(
-                            ZoneId.systemDefault()).toLocalDate()
-                        CalenderState=false
+                        if(datePickerState.selectedDateMillis !=null){
+                            SecondDate= Instant.ofEpochMilli(datePickerState.selectedDateMillis!!).atZone(
+                                ZoneId.systemDefault()).toLocalDate();
+                        }
+                        else{Toast.makeText(context,"Please select date", Toast.LENGTH_LONG).show()}
+
+                             CalenderState=false
                     }) {
                         Text("OK")
                     }

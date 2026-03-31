@@ -166,9 +166,13 @@ fun CustomCalenderScreen(viewModel: veiwModel, navController: NavHostController)
                 onDismissRequest = {CalenderState1=false},
                 confirmButton = {
                     TextButton(onClick = {
-                        SecondDate1= Instant.ofEpochMilli(datePickerState.selectedDateMillis!!).atZone(
-                            ZoneId.systemDefault()).toLocalDate()
-                        CalenderState1=false
+
+                        if(datePickerState.selectedDateMillis !=null){
+                            SecondDate1= Instant.ofEpochMilli(datePickerState.selectedDateMillis!!).atZone(
+                                ZoneId.systemDefault()).toLocalDate();
+                        }
+                        else{Toast.makeText(context,"Please select date", Toast.LENGTH_LONG).show()}
+                        CalenderState1 = false;
                     }) {
                         Text("OK")
                     }
@@ -190,8 +194,12 @@ fun CustomCalenderScreen(viewModel: veiwModel, navController: NavHostController)
                 onDismissRequest = {CalenderState2=false},
                 confirmButton = {
                     TextButton(onClick = {
-                        SecondDate2= Instant.ofEpochMilli(datePickerState.selectedDateMillis!!).atZone(
-                            ZoneId.systemDefault()).toLocalDate()
+
+                        if(datePickerState.selectedDateMillis !=null){
+                            SecondDate2= Instant.ofEpochMilli(datePickerState.selectedDateMillis!!).atZone(
+                                ZoneId.systemDefault()).toLocalDate();
+                        }
+                        else{Toast.makeText(context,"Please select date", Toast.LENGTH_LONG).show()}
                         CalenderState2=false
                     }) {
                         Text("OK")
